@@ -1,0 +1,34 @@
+#
+# For bootstrapping: fbcc compiles itself.
+#
+FBCC= ./fbcc
+PROG = ./fbfbcc
+
+#
+# For testing: fbcc compiled with itself compiles itself :)
+#
+#PROG= fbfbcc1
+#FBCC = ../fbvm/fbvm fbfbcc
+
+FBAS = ../fbas/fbas
+FBINCLUDE = -I../lib -I../fbvm
+FBLIBS = ../lib/startup.ss ../lib/fblib.s
+OBJS = fblist.s fbgen.s fbtype.s fbconst.s fberror.s fbsym.s fbcc.s fbparse.s
+
+all: $(PROG)
+
+#
+# assembling & linking
+#
+$(PROG): $(OBJS)
+	cat $(FBLIBS) $(OBJS) | $(FBAS) -o $(PROG)
+
+clean:
+	rm -f *.s *.i
+	
+#
+# we use gcc (cpp) for preprocessing
+#
+.c.s:
+	gcc -U__GNUC__ -E $(FBINCLUDE) $*.c >$*.i
+	$(FBCC) < $*.i > $*.s

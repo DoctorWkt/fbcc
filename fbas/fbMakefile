@@ -1,0 +1,32 @@
+
+# normal assembling
+PROG= ./fbfbas
+FBCC = ../fbcc/fbcc
+FBAS = ./fbas
+
+# testing of fbfbas
+#PROG= fbfbas1
+#FBCC = ../fbcc
+#FBAS= ../fbvm/fbvm fbfbas
+
+FBINCLUDE = -I../lib -I../fbvm
+FBLIBS = ../lib/startup.ss ../lib/fblib.s ../lib/getopt.s
+OBJS = fbas.s
+all: $(PROG)
+
+$(PROG): $(OBJS) 
+	cat $(FBLIBS) $(OBJS) | $(FBAS) -o $(PROG)
+
+fbas.c: fbas.y lex.yy.c
+	bison -o fbas.c fbas.y
+
+lex.yy.c: fbas_lex.l
+	flex fbas_lex.l
+
+clean:
+	rm -f *.s *.i
+	
+.c.s:
+	gcc -U__GNUC__ -E $(FBINCLUDE) $*.c >$*.i
+	$(FBCC) < $*.i > $*.s
+

@@ -1,0 +1,347 @@
+
+% intro
+
+\begin{slide}{}
+\begin{center}
+\bf
+Réalisation d'un Compilateur C \\
+\end{center}
+\vspace{0.5cm}
+\begin{center}
+{\small Fabrice Bellard}
+\end{center}
+But du projet: 
+\\ 
+Faire un auto-amorçage pour démontrer que le compilateur
+fonctionne effectivement.
+
+\begin{enumerate}
+\item Les choix
+\item L'architecture globale
+\item Le compilateur C
+\item L'assembleur
+\item La machine virtuelle
+\item Les Résultats
+\end{enumerate}
+
+\end{slide}
+
+
+% les choix
+
+\begin{slide}{}
+\pagetitle{Les Choix - 1}
+\small
+Nous avons envisagé la compilation de deux types de langage:
+\begin{itemize}
+\item CAML
+\item C
+\end{itemize}
+Nous avons choisi le C par goût personnel et pour pouvoir tester le
+compilateur sur une large gamme de sources.
+\\
+\\
+Les grands choix:
+\begin{itemize}
+\item Pas de préprocesseur: on utilise {\tt gcc -E}
+\item Pas de flottants
+\item Pas de reprise des erreurs
+\end{itemize}
+
+\end{slide}
+
+
+\begin{slide}{}
+\pagetitle{Les Choix - 2}
+\small
+\begin{itemize}
+\item On utilise {\tt flex(lex)} et {\tt bison(yacc)} pour le {\it parser}.
+Donc le compilateur doit pouvoir accepter le code généré par ces 2
+utilitaires.
+\item Gestion de modules séparés, donc un système d'édition de liens est 
+nécessaire.
+\item Dans la mesure du possible, on reste conforme à la norme {\it ANSI C}.
+\item Utilisation d'une machine à pile. Simple, mais empêche l'évolution du
+compilateur.
+\item Pour des questions de performances, on est dépendant du {\it hardware}: 
+taille des pointeurs, alignement des données, {\it endianité}.
+\item On s'impose enfin la contrainte de dépendre au minimum des fonctions
+des librairies standards: on recompile une partie du code pour {\tt stdlib.h},
+{\tt stdio.h}, {\tt stdarg.h} et {\tt string.h}.
+\end{itemize}
+
+\end{slide}
+
+
+% architecture
+
+\begin{slide}{}
+\pagetitle{Architecture Générale - 1}
+\small
+
+Compilateur C ({\tt fbcc}):\\
+{\tiny (4700 lignes)}
+\begin{enumerate}
+\item {\it Lexer }
+\item {\it Parser }
+\item Gestion des déclarations
+\item Production des données pour les variables statiques
+\item Typage des expressions
+\item Propagation des constantes
+\item Génération de code assembleur
+\end{enumerate}
+
+Assembleur ({\tt fbas}):\\
+{\tiny (700 lignes)}
+\begin{enumerate}
+\item {\it Lexer } - {\it Parser }
+\item Gestion des symboles exportés, globaux, ou privés
+\item Production d'un exécutable relogeable avec table de relocation
+\end{enumerate}
+
+\end{slide}
+
+\begin{slide}{}
+\pagetitle{Architecture Générale - 2}
+\small
+
+Machine virtuelle ({\tt fbvm}):\\
+{\tiny (900 lignes)}
+\begin{enumerate}
+\item Chargement de l'exécutable et relocation
+\item Emulation des instructions
+\item Appel de quelques fonctions de la librairie C standard grâce à
+des {\it traps}
+\end{enumerate}
+
+Librairies ({\tt startup.s},{\tt fblib.c}):\\
+{\tiny (900 lignes)}
+\begin{enumerate}
+\item Code de {\it startup}
+\item Compilation des fonctions {\tt \{fvs\}printf} et {\tt stdarg.h}
+\item Compilation des fonctions de {\tt string.h}
+\end{enumerate}
+
+\end{slide}
+
+
+% FBCC
+
+
+\begin{slide}{}
+\pagetitle{Le Compilateur C - 1}
+\small
+
+Caractéristiques ANSI non implémentées:
+\begin{itemize}
+\item Types {\tt long}, {\tt float} et {\tt double}
+\item Qualificatifs de types {\tt const} et {\tt volatile}
+\item Affectations de structures, passage par valeur et retour de structures
+\item Caractères de type {\tt wchar\_t}
+\item Parsing des constantes de type {\tt unsigned int}
+\item Certaines formes d'initialisations statiques
+\item Quelques contrôles de type dans les expressions et
+structures de contrôle.
+\end{itemize}
+
+\end{slide}
+
+
+\begin{slide}{}
+\pagetitle{Le Compilateur C - 2}
+\small
+
+Exemples de caractéristiques implémentées:
+\begin{itemize}
+\item Anciens et nouveaux prototypes de fonctions, avec les {\tt \ldots }
+pour indiquer une fonction à nombre de paramètres variables
+\item Blocs dans les fonctions
+\item Tableaux multidimensionnels, {\tt struct}, {\tt union}, {\tt enum},
+pointeurs sur les fonctions
+\item Gestion complète de {\tt typedef}
+\item Toutes les instructions de contrôle, y compris les {\tt goto}
+\item Tables des symboles séparées pour les étiquettes de {\tt struct},
+{\tt union}, et {\tt enum}, les champs de structures, les étiquettes de {\tt goto}
+\item Initialisations statiques et dynamiques autorisées
+\item Typage pleinement conforme à la norme ANSI pour presque tous les opérateurs
+\end{itemize}
+
+\end{slide}
+
+
+
+\begin{slide}{}
+\pagetitle{Le Compilateur C - 3}
+\small
+
+Détails d'implémentation:
+\begin{itemize}
+\item Il n'y a pas de représentation intermédiaire pour le code autre que
+celle des expressions. Le compilateur pourrait être vu comme un premier pas
+vers un générateur de code intermédiaire
+\item Toutes les tables de symboles sont gérées avec des tables de hachage
+\item Pratiquement toutes les données sont stockées dans des listes. Cela
+permet de simplifier la gestion de la mémoire et évite d'abord un trop grand
+nombre de structures à définir de façon explicite.
+\item Le modèle de pile est le même que celui du C standard. On utilise un
+lien dynamique et on sauve aussi la taille des arguments passés en
+paramètre.
+\end{itemize}
+
+\end{slide}
+
+
+\begin{slide}{}
+\pagetitle{Le Compilateur C - 4}
+\small
+La syntaxe des déclarations impose de construire une représentation
+intermédiaire pour les types. On utilise pratiquement la même
+représentation pour le type définitif.
+\\
+\\
+\tiny
+Types:
+\begin{verbatim}
+type :==  (base_type)
+        | (TYPE_POINTER) + type
+        | (TYPE_ARRAY dim) + type
+        | (TYPE_STRUCT sym) | (TYPE_UNION sym) | (TYPE_ENUM sym)
+        | (TYPE_FUNC func_type var_list) + type
+
+base_type :==  TYPE_CHAR | TYPE_UCHAR 
+             | TYPE_SHORT | TYPE_USHORT
+             | TYPE_INT | TYPE_UINT
+
+func_type :== FUNC_ELLIPSIS | FUNC_OLD | FUNC_NEW
+
+var_list :== var1 + ... + varN
+
+var :== ( (nom) var_storage type var_init )
+
+var_storage :==  STORAGE_DEFAULT | STORAGE_AUTO | STORAGE_REGISTER 
+               | STORAGE_STATIC | STORAGE_EXTERN
+
+var_init :== (INIT_EXPR expr) | (INIT_LIST var_init1 ... var_initN)
+\end{verbatim}
+\end{slide}
+
+
+\begin{slide}{}
+\pagetitle{Le Compilateur C - 5}
+\tiny
+Table des symboles:
+\begin{verbatim}
+var_location :== VAR_STACK | VAR_DATA
+
+sym_var :== ( SYM_VAR var_storage type (var_location var_offset))
+
+sym_field_struct :== (type offset)
+
+sym_typedef :== (SYM_TYPEDEF type)
+
+sym_struct :==  (TYPE_STRUCT -1)  /* si non défini */
+              | (TYPE_STRUCT symbol_table size align)
+							
+sym_enum_const :== (SYM_ENUM_CONST val)
+\end{verbatim}
+Expressions:
+\begin{verbatim}
+expr :== (type tag expr1 ... exprN )
+
+expr_ident :== (type EXPR_IDENT sym)
+
+expr_call :== (type EXPR_CALL expr_func n param1 paramN)
+
+expr_int :== (type EXPR_INT n)
+
+expr_str :== (type EXPR_STR str1 ... strN)
+
+expr_cast :== (type EXPR_CAST expr)
+
+etc...
+
+\end{verbatim}
+
+\end{slide}
+
+\begin{slide}{}
+\pagetitle{L'Assembleur}
+\small
+
+\begin{itemize}
+\item Génération de code et données dans 2 segments {\tt .text} et {\tt .data}
+\item Données: {\tt .byte \it num}, {\tt .short \it num}, 
+{\tt .int \it expr},{\tt .align \it num}, {\tt .zero \it num}
+\item Etiquettes: {\tt .equ \it sym\tt ,\it num} , {\it sym\tt :}, 
+{\tt .globl \it sym}
+\item Expressions de la forme: {\it sym}, {\it num}, {\it sym \tt +\it num}
+\item Début d'un nouveau module: {\tt .module}
+\end{itemize}
+
+On utilise pour plus de simplicité l'assembleur comme éditeur de liens. Un
+symbole peut être externe (non défini pour le moment), global (grace à la
+directive {\tt .globl}) ou privé.
+\\
+La directive {\tt .module} efface tous les symboles privés.
+\\
+\\
+L'exécutable généré contient une table de relocation car on veut que les
+pointeurs de la machine virtuelle soient compatibles avec les pointeurs
+réels.
+
+\end{slide}
+
+\begin{slide}{}
+\pagetitle{La Machine Virtuelle}
+\small
+
+C'est une machine à pile. Le fichier {\tt fbvmspec.h} donne des informations
+vitales sur l'architecture ({\it endianité}, alignement, taille des types de
+base, modèle de pile). On a supposé ici pour simplifier qu'un pointeur
+avait la même taille qu'un {\tt int}.
+\\
+\\
+Les instructions:
+\begin{verbatim}
+lecture mém.   : ld_b,ld_ub,ld_w,ld_uw,ld_i
+écriture mém.  : st_b,st_w,st_i
+arithmétiques  : add_i,sub_i,mul_i,mul_ui,div_i,
+                 div_ui,mod_i,mod_ui,neg_i
+comparaisons   : cmplt_i,cmple_i,cmpge_i,cmpgt_i,
+                 cmpeq_i,cmpne_i,
+                 cmplt_ui,cmple_ui,cmpge_ui,cmpgt_ui
+logiques       : and_i,or_i,xor_i,not_i,
+                 shl_i,shr_i,shr_ui
+conversions    : cvt_i_b,cvt_i_ub,cvt_i_w,cvt_i_uw
+constantes     : li_i n,libp_i n
+sauts          : jeq_i n,jne_i n,switch_i,jmp n
+fonctions      : jsr n,rts
+gestion pile   : dup,pop,addsp n
+systeme        : libcall n
+\end{verbatim}
+
+\end{slide}
+
+
+\begin{slide}{}
+\pagetitle{Résultats - Conclusion}
+\small
+
+\begin{itemize}
+\item Le compilateur se compile lui-même, et la version compilée se recompile
+elle-même en donnant le même code. La vitesse reste raisonnable. Pour en
+arriver là, il a fallu non seulement réaliser le compilateur, mais aussi
+fabriquer tout un environnement de compilation et d'exécution.
+\item Grande complexité du typage en C. Finalement, un compilateur de langage
+plus évolué doit être paradoxalement plus simple.
+\item Le choix d'une machine à pile n'a pas été optimal. Nous pensions ne
+pas avoir le temps de générer du code intermédiaire puis un code assembleur
+pour une machine à registres. Finalement, avec le recul, si un tel choix
+avait été fait dès le début, nous aurions pu mener à bien cette tâche.
+Cela aurait permis de plus travailler sur l'optimisation du code généré.
+\item Il faut donc plutôt voir ce projet comme un générateur de code
+intermédiaire pour le C et non comme un compilateur complet.
+\end{itemize}
+
+\end{slide}
+

@@ -1,0 +1,233 @@
+This is MlTeX, C Version 3.1415 (C version 6.1) (format=splain 94.3.30)  10 APR 1996 21:45
+**fbcc_slides.tex
+(fbcc_slides.tex
+SliTeX Version 2.09 <25 March 1992>
+(/usr/local/lib/texmf/tex/latex/base/slides.sty
+Document Style 'slides' -- released 04 Nov 91
+) (/usr/local/lib/texmf/tex/latex/contrib/french.sty
+
+ Extension : style french V3,36 -- 9 f{é}vrier 1995 -- (B.Gaulle, GUTenberg)
+(/usr/local/lib/texmf/tex/latex/contrib/english.sty)
+\@FrDimen=\dimen99
+)
+No file fbcc_slides.aux.
+\c@chapter=\count83
+\@FrCount=\count84
+(fbcc1.tex [1
+
+]
+Les Choix - 1
+
+Underfull \hbox (badness 10000) in paragraph at lines 40--45
+
+
+\hbox(0.0+0.0)x460.0
+.\penalty -10000
+.\glue(\rightskip) 0.0
+
+[2]
+Les Choix - 2
+
+Overfull \hbox (5.36064pt too wide) in paragraph at lines 61--63
+[] []\seventeenrm Gestion de mo-dules sé-pa-rés, donc un sys-tème d'édi-
+
+\hbox(11.52222+2.30444)x422.0, glue set - 1.0
+.\hbox(0.0+0.0)x0.0
+.\glue 0.0
+.\hbox(8.64166+0.0)x0.0
+..\glue 0.0
+..\glue -28.0
+..\glue -10.0
+..\hbox(8.64166+0.0)x28.0, glue set 28.0fil
+...\glue 0.0 plus 1.0fil minus 1.0fil
+...\hbox(8.64166+0.0)x0.0, glue set - 10.37003fil []
+..\glue 10.0
+.\penalty 0
+.\seventeenrm G
+.etc.
+
+[3]
+Architecture Générale - 1
+
+Overfull \hbox (2.24979pt too wide) in paragraph at lines 88--89
+[] []\seventeenrm Production des don-nées pour les va-riables sta-tiques 
+
+\hbox(11.52222+2.30444)x422.0, glue set - 1.0
+.\hbox(0.0+0.0)x0.0
+.\glue 0.0
+.\hbox(10.94609+0.0)x0.0
+..\glue 0.0
+..\glue -28.0
+..\glue -10.0
+..\hbox(10.94609+0.0)x28.0, glue set 28.0fil
+...\glue 0.0 plus 1.0fil minus 1.0fil
+...\hbox(10.94609+0.0)x0.0, glue set - 16.13115fil []
+..\glue 10.0
+.\penalty 0
+.\seventeenrm P
+.etc.
+
+[4]
+Architecture Générale - 2
+[5]
+Le Compilateur C - 1
+[6]
+Le Compilateur C - 2
+
+Overfull \hbox (1.21046pt too wide) in paragraph at lines 166--167
+[] []\seventeenrm Typage plei-ne-ment conforme à la norme ANSI pour
+
+\hbox(11.52222+2.30444)x422.0, glue set - 1.0
+.\hbox(0.0+0.0)x0.0
+.\glue 0.0
+.\hbox(8.64166+0.0)x0.0
+..\glue 0.0
+..\glue -28.0
+..\glue -10.0
+..\hbox(8.64166+0.0)x28.0, glue set 28.0fil
+...\glue 0.0 plus 1.0fil minus 1.0fil
+...\hbox(8.64166+0.0)x0.0, glue set - 10.37003fil []
+..\glue 10.0
+.\penalty 0
+.\seventeenrm T
+.etc.
+
+[7]
+Le Compilateur C - 3
+
+Overfull \hbox (9.62376pt too wide) in paragraph at lines 183--186
+[] []\seventeenrm Pratiquement toutes les don-nées sont sto-ckées dans
+
+\hbox(11.52222+2.30444)x422.0, glue set - 1.0
+.\hbox(0.0+0.0)x0.0
+.\glue 0.0
+.\hbox(8.64166+0.0)x0.0
+..\glue 0.0
+..\glue -28.0
+..\glue -10.0
+..\hbox(8.64166+0.0)x28.0, glue set 28.0fil
+...\glue 0.0 plus 1.0fil minus 1.0fil
+...\hbox(8.64166+0.0)x0.0, glue set - 10.37003fil []
+..\glue 10.0
+.\penalty 0
+.\seventeenrm P
+.etc.
+
+[8]
+Le Compilateur C - 4
+
+Underfull \hbox (badness 10000) in paragraph at lines 195--204
+
+
+\hbox(0.0+0.0)x460.0
+.\penalty -10000
+.\glue(\rightskip) 0.0
+
+
+Overfull \hbox (10.02148pt too wide) in paragraph at lines 225--225
+[]        \fourteentt | (TYPE_STRUCT sym) | (TYPE_UNION sym) | (TYPE_ENUM sym)[
+] 
+
+\hbox(9.59999+3.07198)x460.0
+.\hbox(0.0+0.0)x0.0
+.\penalty 10000
+.\glue 7.34409
+.\penalty 10000
+.\glue 7.34409
+.etc.
+
+
+Overfull \hbox (24.70966pt too wide) in paragraph at lines 225--225
+[]\fourteentt var_storage :==  STORAGE_DEFAULT | STORAGE_AUTO | STORAGE_REGISTE
+R[] 
+
+\hbox(9.59999+3.07198)x460.0
+.\hbox(0.0+0.0)x0.0
+.\fourteentt v
+.\fourteentt a
+.\fourteentt r
+.\fourteentt _
+.etc.
+
+
+Overfull \hbox (32.05374pt too wide) in paragraph at lines 225--225
+[]\fourteentt var_init :== (INIT_EXPR expr) | (INIT_LIST var_init1 ... var_init
+N)[] 
+
+\hbox(9.59999+3.07198)x460.0
+.\hbox(0.0+0.0)x0.0
+.\fourteentt v
+.\fourteentt a
+.\fourteentt r
+.\fourteentt _
+.etc.
+
+[9]
+Le Compilateur C - 5
+
+Overfull \hbox (17.36557pt too wide) in paragraph at lines 246--246
+[]\fourteentt sym_var :== ( SYM_VAR var_storage type (var_location var_offset))
+[] 
+
+\hbox(9.59999+3.07198)x460.0
+.\hbox(0.0+0.0)x0.0
+.\fourteentt s
+.\fourteentt y
+.\fourteentt m
+.\fourteentt _
+.etc.
+
+[10]
+L'Assembleur
+
+Overfull \hbox (7.55217pt too wide) in paragraph at lines 273--275
+[] []\seventeenrm Données: \seventeentt .byte \seventeenit num\seventeenrm , \s
+eventeentt .short \seventeenit num\seventeenrm , \seventeentt .int \seventeenit
+ expr\seventeenrm ,\seventeentt .align
+
+\hbox(11.3494+3.68709)x422.0, glue set - 1.0
+.\hbox(0.0+0.0)x0.0
+.\glue 0.0
+.\hbox(8.64166+0.0)x0.0
+..\glue 0.0
+..\glue -28.0
+..\glue -10.0
+..\hbox(8.64166+0.0)x28.0, glue set 28.0fil
+...\glue 0.0 plus 1.0fil minus 1.0fil
+...\hbox(8.64166+0.0)x0.0, glue set - 10.37003fil []
+..\glue 10.0
+.\penalty 0
+.\seventeenrm D
+.etc.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 281--291
+
+
+\hbox(0.0+0.0)x460.0
+.\penalty -10000
+.\glue(\rightskip) 0.0
+
+[11]
+La Machine Virtuelle
+
+Underfull \hbox (badness 10000) in paragraph at lines 298--305
+
+
+\hbox(0.0+0.0)x460.0
+.\penalty -10000
+.\glue(\rightskip) 0.0
+
+[12]
+Résultats - Conclusion
+[13]) ) 
+Here is how much of TeX's memory you used:
+ 708 strings out of 11693
+ 5930 string characters out of 84022
+ 40522 words of memory out of 262141
+ 2916 multiletter control sequences out of 9500
+ 27487 words of font info for 104 fonts, out of 100000 for 255
+ 32 hyphenation exceptions out of 607
+ 13i,4n,16p,185b,268s stack positions out of 300i,40n,60p,3000b,4000s
+
+Output written on fbcc_slides.dvi (13 pages, 13624 bytes).

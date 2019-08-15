@@ -1,0 +1,67 @@
+Une structure de donnée 'LIST' est utilisée dans tout le compilateur C
+pendant le parsing.
+
+
+/* Structure des listes définissant les types */
+
+base_type :==  TYPE_CHAR | TYPE_UCHAR 
+             | TYPE_SHORT | TYPE_USHORT
+						 | TYPE_INT | TYPE_UINT
+
+func_type :== FUNC_ELLIPSIS | FUNC_OLD | FUNC_NEW
+
+type :==  (base_type)
+        | (TYPE_POINTER) + type
+        | (TYPE_ARRAY dim) + type
+	| (TYPE_STRUCT sym) | (TYPE_UNION sym) | (TYPE_ENUM sym)
+        | (TYPE_FUNC func_type var_list) + type
+				
+var_list :== var1 + ... + varN
+
+var :== ( (nom) var_storage type var_init )
+
+var_storage :==  STORAGE_DEFAULT | STORAGE_AUTO | STORAGE_REGISTER 
+               | STORAGE_STATIC | STORAGE_EXTERN
+
+var_init :== (INIT_EXPR expr) | (INIT_LIST var_init1 ... var_initN)
+
+
+/* Structures dans la table des symboles */
+
+var_location :== VAR_STACK | VAR_DATA
+
+sym_var :== ( SYM_VAR var_storage type (var_location var_offset))
+
+sym_field_struct :== (type offset)
+sym_field_union :==  (type 0)
+
+sym_typedef :== (SYM_TYPEDEF type)
+
+sym_struct :== (TYPE_STRUCT -1)  /* si non défini */
+              (TYPE_STRUCT symbol_table size align)
+							
+sym_enum_const :== (SYM_ENUM_CONST val)
+
+/* Structures pour les expressions */
+
+expr :== (type tag expr1 ... exprN )
+
+expr_ident :== (type EXPR_IDENT sym)
+
+expr_call :== (type EXPR_CALL expr_func n param1 paramN)
+
+
+/* Caractérisques du ANSI C non implémentées */
+
+- qualificatifs de type 'const' et 'volatile'
+
+- passage par valeur de structures, et retour de structures
+
+- types long, et flottants
+
+- chaînes de type wchar_t
+
+- initialisation de structs
+
+- initialisation de tableau pour les variables locales
+
